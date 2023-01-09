@@ -1,0 +1,8 @@
+*.o
+main
+.vscode/
+.vscode/tasks.json
+temp/
+kifu.sfenstack
+kifu.sfenlist
+linkedlist/a.out
