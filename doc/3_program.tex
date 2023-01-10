@@ -1,0 +1,86 @@
+	\section{程式}
+	於此章節，我們在此簡要敘述本程式使用到的函式及預定義的常數。
+	\subsection{實作功能}
+	\begin{itemize}
+	    \item 棋駒移動
+	    \item 棋駒昇變
+	    \item 駒台與持駒打入
+	    \item 棋譜輸出
+	    \item 輸出一般網站可使用之棋譜（sfen）
+	\end{itemize}
+	\subsection{預定義常數}
+	\lstinputlisting[language=C]{src/const.c}
+	\subsection{結構}
+	於此章節，我們定義此程式使用的結構體如下:
+\lstinputlisting[language=C]{src/structures.c}	
+	\subsection{函式}
+\lstinputlisting[language=C]{src/functions.c}
+	
+
+	\subsection{編譯方式}
+	    請下載並開啟本專案資料夾，並輸入以下指令：
+	    \begin{lstlisting}[language=sh,caption=Compile Parameters]
+$ make  
+$ ./main	     \end{lstlisting}
+
+\subsection{棋譜輸出格式}
+於本專案中，遊戲過程將於退出時紀錄於\verb|./sfenlist|。該格式之讀法請參照\autoref{chap:sfen}，以一行為單位為一手的盤面。範例輸出如下：
+\begin{lstlisting}
+lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
+lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2
+lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL b - 3
+lnsgkgsnl/1r5+B1/pppppp1pp/6p2/9/2P6/PP1PPPPPP/7R1/LNSGKGSNL w B 4
+lnsgkg1nl/1r5s1/pppppp1pp/6p2/9/2P6/PP1PPPPPP/7R1/LNSGKGSNL b Bb 5
+lnsgkg1nl/1r5s1/pppppp1pp/6p2/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL w b 6
+\end{lstlisting}
+
+\subsection{程式使用方式}
+
+
+
+\subsubsection{開始新局面}
+請執行以下指令
+\begin{lstlisting}[language=sh,caption=Compile Parameters]
+$ ./main	     
+\end{lstlisting}
+以開啟新局面。
+進入後，系統將會提示輸入先手方之棋步，請依照以下規則輸入：[初始座標][結束座標][棋駒羅馬簡寫]，座標之(1,1)位於棋盤先手方之左上角。\\
+範例如下：
+\begin{lstlisting}[,caption=Examples of Inputs]
+77 76 fu
+33 34 fu
+88 22 kaku
+31 22 gin 
+00 55 kaku //`持駒打入，初始座標為00`
+\end{lstlisting}
+若棋駒可昇變，將會提示
+\begin{lstlisting}[]
+`<<成りますか？>>(naru, narazu)`
+\end{lstlisting}
+請輸入\verb|naru|以昇變或\verb|narazu|以保持為原棋駒。\\
+若要悔棋，可以輸入
+\begin{lstlisting}[]
+revert
+\end{lstlisting}
+；若要退出，請輸入
+\begin{lstlisting}[]
+quit
+\end{lstlisting}
+。退出之後，此程式會紀錄該次棋局之棋譜，存放於
+\begin{lstlisting}[]
+./kifu.sfenlist
+\end{lstlisting}
+存放，待回放使用。
+\subsubsection{單行sfen棋譜讀入}
+請執行以下指令
+\begin{lstlisting}[language=sh,caption=Compile Parameters]
+$ ./main --readsfen ${SFENFILE_LOCATION}	     
+\end{lstlisting}
+以使用sfen格式繼續中斷的棋局，並繼續遊玩。
+您可以使用 \\https://lishogi.org/analysis/ 以生成一個新盤面。
+\subsubsection{棋譜瀏覽}
+本棋譜瀏覽功能僅限讀入本程式之 \verb|sfenlist| 檔案。請使用
+\begin{lstlisting}[language=sh]
+$ ./main --replay ${SFENLIST_FILE_LOCATION}	     
+\end{lstlisting}
+並使用 \verb|f, b| 前後瀏覽。退出時按下 \verb|q| 即可。 

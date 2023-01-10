@@ -1,0 +1,137 @@
+\section{先備知識}
+    由於本專案大量的使用日本將棋之日文術語用於命名變數，為求程式之可讀性，在此列出可能會使用到之術語：
+	\subsection{棋駒}
+	\begin{table}[h]
+	    \centering
+	    \begin{tabular}{c|c|c|c}
+	        棋駒名稱 & 日文簡寫 & 羅馬拼音 & 羅馬簡寫\\
+	        \hline
+	        步兵 & 步 & fuhyou & fu\\
+	        香車 & 香 & kyousha & kyo\\
+	        桂馬 & 桂 & keima & kei\\
+	        銀將 & 銀 & ginshou & gin\\
+	        金將 & 金 & kinshou & kin\\
+	        飛車 & 飛 & hishya & hi\\
+	        角行 & 角 & kakugyo & kaku\\
+	        玉將 & 玉 & gyokushou & gyoku\\
+	         \hline
+	        と金 & と & tokin & to\\
+	        成香 & 杏 & narikyo & narikyo\\
+	        成桂 & 圭 & narikei & narikei\\
+	        成銀 & 全 & narigin & narigin\\
+	        竜王 & 竜 & ryuuou & ryu\\
+	        竜馬 & 馬 & ryuuma & uma\\
+	    \end{tabular}
+	    \caption{棋駒名稱及常用羅馬拼音對照表}
+	    \label{tab:my_label}
+	\end{table}
+	\subsection{術語解釋}
+	於此章節，主要介紹於此程式可能會使用到的術語。該術語將會長時間
+	\begin{table}[]
+	    \centering
+	    	\begin{tabular}{c|c|c|l}
+	        術語 & 日文 & 羅馬拼音 & 定義\\
+	        \hline
+	        成變 & なる  & naru  & 友方棋駒到達敵陣三段目時之棋駒升級\\
+	        持駒& もちこま & mochikoma& 捕獲的對方持駒列表\\
+	        盤面& ばんめん & bannmenn&將棋遊戲盤面\\
+	        棋譜 & きふ & kifu& 紀錄對局紀錄之檔案\\
+	        手番 & てばん & teban & 現在盤面輪到的對局者\\
+	        先手 & せんて & sente&     開局先走棋的對局者（奇數手）\\
+	        後手 & ごて & gote& 開局後走棋的對局者（偶數手）\\
+	       
+	    \end{tabular}
+	    \caption{術語名稱及常用羅馬拼音對照表}
+	    \label{tab:my_label}
+	\end{table}
+
+	
+
+	\subsection{棋譜 / 遊戲紀錄格式}
+	In this section, we will introduce how the kifus (or game records ) are stored in Japanese Shogi Association as well as Computer Shogi Association.
+	
+	\subsubsection{棋譜格式}
+
+
+    \lstset{escapeinside=``}
+    \subsubsection{KIF 記譜格式}
+    KIF記譜格式為傳統記譜外最普及的將棋棋譜格式，因篇幅所現不仔細講解，並列格式如下：
+    \lstinputlisting[language=C]{kifu/kif.txt}
+	\subsubsection{CSA 記譜格式}
+	根據計算機將棋協會(コンピュータ将棋協会, Computer Shogi Association)所制定之計算機通用棋譜紀錄格式\cite{CSA}，在此列出CSA棋譜之記錄格式：
+	
+	
+	
+	\paragraph{盤面} 紀錄當時棋局的盤面。其要點如下所示：
+	\begin{itemize}
+	
+	    \item 各棋駒由下表賦予其英文代號：
+	    \begin{table}[h]
+	        \centering
+	        \begin{tabular}{c|c|c|c|c|c|c|c}
+	           步  &香 & 桂 &銀&金&飛&角&玉/王 \\
+	           \hline
+	             FU  &KY & KE &GI&KI&HI&KA&OU\\
+	            \hline
+	            と  &杏 & 圭 &全&&竜&馬\\
+	            \hline
+	            TO &NY & NK &NG& &RY&UM\\
+	        \end{tabular}
+	        \caption{KIF代號對照表}
+	        \label{tab:my_label}
+	    \end{table}
+	    \item 每個CSA檔案可包含一(可選的)盤面作為初始盤面。若無指定，將會預設為一般的初始盤面。
+
+	    \item 若要記錄持駒，可使用如 \verb|P[先後手]00[棋駒代號]| 之方式。 
+	    
+	\end{itemize}
+	\paragraph{棋譜} 移動的棋譜將以以下物件生成：
+	    \begin{itemize}
+	        \item 手番： 以\verb|+|或是\verb|-| 表示。
+	        \item 初始座標：將棋駒移動前的座標以[筋][段]之方式表示。
+	        \item 結束座標：將棋駒結束移動座標以[筋][段]之方式表示。
+	    \end{itemize}
+	\paragraph{終局} 終局時，可以 \verb|%TORYO| 表記棋局結束。
+	以下為標準的CSA 棋譜表示法：
+	\lstinputlisting[]{kifu/csa.txt}
+	\subsubsection{SFEN 記譜格式\cite{SFEN}}
+	\label{chap:sfen}
+	SFEN 格式全稱為 \textit{Shogi Forsyth-Edwards Notation} ，係仿製西洋棋之 \textit{Forsyth-Edwards Notation} \cite{FEN} 所定義的盤面標示格式。該類型之棋譜可用於紀錄當前盤面，且無須紀錄該盤面自初手開始的棋局變化。所需之欄位如下所示：
+	\paragraph{盤面}
+	紀錄當時棋局的盤面。其要點如下所示：
+	\begin{itemize}
+	    \item 棋譜輸入自左到右，由上到下；對應於傳統將棋座標中，自９一開始到１九結束。
+	    \item 各棋駒由下表賦予其英文代號：
+	    \begin{table}[h]
+	        \centering
+	        \begin{tabular}{c|c|c|c|c|c|c|c}
+	           步  &香 & 桂 &銀&金&飛&角&玉/王 \\
+	           \hline
+	             P  &L & N &S&G&R&B&K
+	        \end{tabular}
+	        \caption{SFEN代號對照表}
+	        \label{tab:my_label}
+	    \end{table}
+	    \item 若該棋駒為昇變棋駒，則於該代號前加上一個 \verb|+| 號標記。
+	    \item 無棋駒的連續 $n$ 個空格以數字$n$表示。
+	    \item 一行以九個棋駒為限，行與行間用 \verb|/| 區隔。若令一行中有 $m$ 個英文字元與 $n$ 個數字，分別為$n_1, n_2 \cdots$，則每一行有以下限制：
+	    $$
+	    m + \sum n_i = 9
+	    $$
+	\end{itemize}
+	\paragraph{手番}記錄該盤面下一手的所屬。
+	\paragraph{持駒}記錄先後手的持駒。大寫的代號為先手持駒，小寫則為後手持駒。所有的持駒將會以無空白字串儲存。若一方持有 $n$ 個相同持駒，則在對應的代號上加上數字 $n$ 。
+	\paragraph{手數}紀錄當時的手數（自棋局開始後經過的棋步數量）。
+	
+    \subsection{初手局面}
+    此為將棋棋局的最初局面，如下圖：
+    \begin{figure}[h]
+        \centering
+          \shogiban{\hirate}
+        \caption{棋局初手局面}
+        \label{fig:my_label}
+    \end{figure}
+    該盤面可使用SFEN記譜表示為
+    \begin{lstlisting}
+lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
+\end{lstlisting}

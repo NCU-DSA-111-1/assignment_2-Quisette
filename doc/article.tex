@@ -1,0 +1,96 @@
+% this preamble is used for document class:article.
+%\usepackage{xeCJK}
+\usepackage{graphicx}
+\usepackage{float}
+\graphicspath{{image/}}
+\usepackage{graphpap} % 方格紙
+
+
+\usepackage[most]{tcolorbox}
+\usepackage{cleveref}
+%\setCJKmainfont{Noto Serif TC}
+
+\tcbset{theostyle/.style={
+		enhanced,
+		sharp corners,
+		attach boxed title to top left={
+			xshift=-1mm,
+			yshift=-4mm,
+			yshifttext=-1mm
+		},
+		top=1.5ex,
+		colback=white,
+		colframe=blue!75!black,
+		fonttitle=\bfseries,
+		boxed title style={
+			sharp corners,
+			size=small,
+			colback=blue!75!black,
+			colframe=blue!75!black,
+		} 
+}}
+\tcbset{defstyle/.style={
+		enhanced,
+		sharp corners,
+		attach boxed title to top left={
+			xshift=-1mm,
+			yshift=-4mm,
+			yshifttext=-1mm
+		},
+		top=1.5ex,
+		colback=white,
+		colframe=green!50!black,
+		fonttitle=\bfseries,
+		boxed title style={
+			sharp corners,
+			size=small,
+			colback=green!50!black,
+			colframe=green!50!black,
+		} 
+}}
+\tcbset{expstyle/.style={
+		enhanced,
+		sharp corners,
+		attach boxed title to top left={
+			xshift=-1mm,
+			yshift=-4mm,
+			yshifttext=-1mm
+		},
+		top=1.5ex,
+		colback=white,
+		colframe=red!70!black,
+		fonttitle=\bfseries,
+		boxed title style={
+			sharp corners,
+			size=small,
+			colback=red!70!black,
+			colframe=red!70!black,
+		} 
+}}
+
+\newtcbtheorem[number within=section]{Thm}{Theorem}{
+	theostyle
+}{thm}
+
+\newtcbtheorem[number within=section]{Def}{Definition}{
+	defstyle
+}{def}
+
+\newtcbtheorem[number within=section]{Exp}{Example}{
+	expstyle
+}{exp}
+
+\newtcbtheorem[number within = tcb@cnt@Thm]{Lem}{Lemma}{
+	theostyle
+}{lem}
+\newtcbtheorem[number within=tcb@cnt@Thm]{Cor}{Corollary}{
+	theostyle
+}{cor}
+
+\newtcbtheorem[number within=section]{Wng}{Warning}{
+	expstyle
+}{Wng}
+
+\newtcbtheorem[number within=section]{Tip}{Tips}{
+	theostyle
+}{Tip}
